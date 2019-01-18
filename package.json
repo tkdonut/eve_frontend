@@ -1,0 +1,24 @@
+{
+  "name": "eveinterface",
+  "version": "1.0.0",
+  "description": "A front-end for the EVEOnline ESI API.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tkdonut/eve_frontend.git"
+  },
+  "author": "Thomas Kendrick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tkdonut/eve_frontend/issues"
+  },
+  "homepage": "https://github.com/tkdonut/eve_frontend#readme",
+  "devDependencies": {
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
+  }
+}
