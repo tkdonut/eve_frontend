@@ -25,7 +25,7 @@ Character.prototype.getData = function () {
     PubSub.publish('Character:Character-Data-retrieved', this.data);
   })
     .catch((err) =>{
-    console.error(err);
+      console.error(err);
     });
 
   PubSub.publish('Character:Character-Data-pending', {});

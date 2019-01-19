@@ -8,12 +8,14 @@ body {
 
 .main_wrapper {
   margin: 30px;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .characterdisplay {
+  padding: 20px;
+  width: 800px;
   display: flex;
   flex-direction: row;
+  background-color: black;
 }
 
 .characterdisplay_lhs {
