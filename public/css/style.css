@@ -1,11 +1,32 @@
+@import url('https://fonts.googleapis.com/css?family=Exo+2');
 
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 body {
   color: white;
-  background-color : grey;
+  font-family: 'Exo 2', sans-serif;
+  background-image: url('../assets/bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+.main_wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .main_nav {
   text-align: center;
+  background-color: rgba(0,0,0,0.8);
+  border-radius: 10px;
+  width: 700px;
+  padding-bottom: 10px;
 }
 
 .main_content {
@@ -17,24 +38,45 @@ body {
 
 .characterdisplay {
   padding: 20px;
-  width: 1000px;
-  display: flex;
-  flex-direction: row;
-  background-color: black;
+  display: grid;
+  grid-template-areas: 'header header'
+                       'lhs rhs'
+                       'description description';
+  background-color: rgba(0,0,0,0.8);
   margin: 20px;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+}
+
+.characterdisplay img {
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px black;
+}
+
+
+.characterdisplay_lhs {
+  grid-area: lhs;
+  display: flex;
+  align-items: center;
 }
 
 .characterdisplay_rhs {
+  grid-area: rhs;
   padding: 20px;
-  width: 75%;
   display: flex;
   flex-direction: column;
+  width: 500px;
 }
 
 .description{
+  grid-area: description;
+  margin-top: 30px;
   border-style: solid;
   padding: 20px;
-  width : 80%;
+  overflow: hidden;
+  max-width: 800px;
 }
 
 .description font{
@@ -44,3 +86,4 @@ body {
 .description a {
   color: white;
 }
+

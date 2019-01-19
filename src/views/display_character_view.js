@@ -41,13 +41,15 @@ DisplayCharacterView.prototype.render = function() {
   rhs = this.renderRHS(rhs);
   characterView.appendChild(rhs);
 
+  if (this.character_data.description){
+    const description = this.constructDescription();
+    characterView.appendChild(description);
+  }
+
   container.appendChild(characterView);
 };
 
 DisplayCharacterView.prototype.renderLHS = function (container){
-  const header = document.createElement('h1');
-  header.textContent = this.character_data.name;
-  container.appendChild(header);
   const portrait = document.createElement('img');
   portrait.src = this.portraitURL.px256x256;
   container.appendChild(portrait);
@@ -55,16 +57,16 @@ DisplayCharacterView.prototype.renderLHS = function (container){
 };
 
 DisplayCharacterView.prototype.renderRHS = function (container){
+  const header = document.createElement('h1');
+  header.textContent = this.character_data.name;
+  container.appendChild(header);
+  const birthday = new Date(this.character_data.birthday);
   const list = this.constructList(
     [
-      'Born: ' + this.character_data.birthday, 
+      'Born: ' + birthday.toUTCString(), 
       'Gender: ' + this.character_data.gender, 
     ]);
   container.appendChild(list);
-  if (this.character_data.description){
-    const description = this.constructDescription();
-    container.appendChild(description);
-  }
   return container; 
 };
 
