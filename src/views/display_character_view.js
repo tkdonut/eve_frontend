@@ -9,13 +9,18 @@ const DisplayCharacterView = function (container) {
 
 DisplayCharacterView.prototype.bindEvents = function() {
 
+  PubSub.subscribe('Search:GotSearchResults', event => {
+    const results = event.detail;  
+    results.forEach( result => {
+      PubSub.publish( 'DisplayCharacterView:EachSearchResult', result);
+
+    });
+  });
+
   PubSub.subscribe('Character:Character-Data-Collected', event => {
     this.character_id = event.detail[0];
     this.character_data = event.detail[1];  
     this.portraitURL = event.detail[2];  
-    console.table(this.character_data);
-    console.table(this.portraitURL);
-    console.table(event.detail[0]);
     this.render(); 
   });
 };
@@ -50,10 +55,33 @@ DisplayCharacterView.prototype.renderLHS = function (container){
 };
 
 DisplayCharacterView.prototype.renderRHS = function (container){
-  const para = document.createElement('p');
-  para.textContent = this.character_id;
-  container.appendChild(para);
+  const list = this.constructList(
+    [
+      'Born: ' + this.character_data.birthday, 
+      'Gender: ' + this.character_data.gender, 
+    ]);
+  container.appendChild(list);
+  if (this.character_data.description){
+    const description = this.constructDescription();
+    container.appendChild(description);
+  }
   return container; 
 };
 
+DisplayCharacterView.prototype.constructList = function (listItems) {
+  const ul = document.createElement('ul');
+  listItems.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    ul.appendChild(li);
+  });
+  return ul;
+};
+
+DisplayCharacterView.prototype.constructDescription = function(){
+  const description = document.createElement('div');
+  description.innerHTML = this.character_data.description;
+  description.className = 'description';
+  return description;
+};
 module.exports = DisplayCharacterView;

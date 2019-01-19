@@ -3,11 +3,10 @@ const PubSub = {
     const event = new CustomEvent(channel, {
       detail: payload
     });
-    document.dispatchEvent(event);
-
     console.log(
       `Successfully published on channel: ${channel} with payload: ${payload}`
     );
+    document.dispatchEvent(event);
   },
 
   subscribe: function (channel, callback) {

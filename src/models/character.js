@@ -7,6 +7,14 @@ const Character = function (characterID) {
   this.portraitURL = null;
 };
 
+
+Character.prototype.bindEvents = function() {
+  PubSub.subscribe('DisplayCharacterView:EachSearchResult', event => {
+    new Character(event.detail).getData(); 
+  });
+};
+
+
 Character.prototype.getData = function () {
   const url = `https://esi.evetech.net/latest/characters/${this.characterID}/?datasource=tranquility`;
   const request = new RequestHelper(url);
@@ -16,7 +24,7 @@ Character.prototype.getData = function () {
     this.getPortrait();
   })
     .catch((err) =>{
-    console.error(err);
+      console.error(err);
     });
 };
 
