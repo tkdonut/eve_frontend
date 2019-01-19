@@ -10,3 +10,17 @@ body {
   margin: 30px;
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+.characterdisplay {
+  display: flex;
+  flex-direction: row;
+}
+
+.characterdisplay_lhs {
+  height:400px;
+  width: 50%;
+}
+.characterdisplay_rhs {
+  height:400px;
+  width:50%;
+}
