@@ -3,24 +3,16 @@ const PubSub = require('../helpers/pub_sub.js');
 const DisplayCharacterView = function (container) {
   this.container = container;
   this.character_data = null;
-  this.character_id = null;
   this.portraitURL = null;
 };
 
 DisplayCharacterView.prototype.bindEvents = function() {
 
-  PubSub.subscribe('Search:GotSearchResults', event => {
-    const results = event.detail;  
-    results.forEach( result => {
-      PubSub.publish( 'DisplayCharacterView:EachSearchResult', result);
-
-    });
-  });
-
-  PubSub.subscribe('Character:Character-Data-Collected', event => {
-    this.character_id = event.detail[0];
-    this.character_data = event.detail[1];  
-    this.portraitURL = event.detail[2];  
+  PubSub.subscribe('Character:CharacterDataReady', event => {
+    this.character_data = event.detail[0];  
+    this.portraitURL = event.detail[1];  
+    this.corpData = event.detail[2];
+    this.corpIconURL = event.detail[3];
     this.render(); 
   });
 };

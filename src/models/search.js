@@ -20,7 +20,7 @@ Search.prototype.performSearch = function() {
   const request = new RequestHelper(url);
   const searchPromise = request.get();
   searchPromise.then( data => {
-    PubSub.publish('Search:GotSearchResults', data.character)  
+    PubSub.publish('Search:GotSearchResults', data.character);
   });
 };
 

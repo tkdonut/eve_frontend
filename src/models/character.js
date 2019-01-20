@@ -1,53 +1,76 @@
 const RequestHelper = require('../helpers/request_helper.js');
 const PubSub = require('../helpers/pub_sub.js');
 
-const Character = function (characterID) {
-  this.characterID = characterID;
+const Character = function () {
   this.data = null;
   this.portraitURL = null;
+  this.corpData = null;
+  this.corpIconData = null;
 };
 
-
 Character.prototype.bindEvents = function() {
-  PubSub.subscribe('DisplayCharacterView:EachSearchResult', event => {
-    new Character(event.detail).getData(); 
+  PubSub.subscribe('Search:GotSearchResults', event => {
+    const searchResults = event.detail;
+    const promisesArray = searchResults.map(result => this.getData(result));
+    Promise.all(promisesArray).then(values => {
+      values.forEach(value => {
+        PubSub.publish('Character:CharacterDataReady', value);
+      });
+    });
   });
 };
 
+Character.prototype.getData = function (id){
 
-Character.prototype.getData = function () {
-  const url = `https://esi.evetech.net/latest/characters/${this.characterID}/?datasource=tranquility`;
-  const request = new RequestHelper(url);
-  const charPromise = request.get();
-  charPromise.then((data) => {
-    this.data = data;
-    this.getPortrait();
-  })
-    .catch((err) =>{
-      console.error(err);
+  let charData = null;
+  let portraitURL = null;
+  let corpData = null;
+  let corpIconURL = null;
+  
+  const charPromise = this.getBasicData(id)
+    .then(data => {
+      charData = data;
+    }).then(() => {
+      return this.getPortrait(id);
+    }).then( portraitReturn => {
+      portraitURL = portraitReturn;
+    }).then(() => {
+      return this.getCorpData(charData);
+    }).then( corpReturn => {
+      corpData = corpReturn;
+    }).then(() => {
+      return this.getCorpIcon(charData);
+    }).then( corpIconReturn => {
+      corpIconURL = corpIconReturn;
+    }).then(() => {
+      return ([charData, portraitURL, corpData, corpIconURL]);
     });
+
+  return charPromise;
 };
 
-Character.prototype.getPortrait = function () {
-  const url = `https://esi.evetech.net/latest/characters/${this.characterID}/portrait/?datasource=tranquility`;
+Character.prototype.getBasicData = function (id) {
+  const url = `https://esi.evetech.net/latest/characters/${id}/?datasource=tranquility`;
   const request = new RequestHelper(url);
-  const charPromise = request.get();
-  charPromise.then((data) => {
-    this.portraitURL = data;
-    PubSub.publish(
-      'Character:Character-Data-Collected',
-      [
-        this.characterID,
-        this.data,
-        this.portraitURL
-      ]
-    );
-  })
-    .catch((err) =>{
-      console.error(err);
-    });
+  return request.get();
+};
 
+Character.prototype.getPortrait = function (id) {
+  const url = `https://esi.evetech.net/latest/characters/${id}/portrait/?datasource=tranquility`;
+  const request = new RequestHelper(url);
+  return request.get();
+};
 
+Character.prototype.getCorpData = function (charData) {
+  const url = `https://esi.evetech.net/latest/corporations/${charData.corporation_id}/?datasource=tranquility`;
+  const request = new RequestHelper(url);
+  return request.get();
+};
+
+Character.prototype.getCorpIcon = function (charData) {
+  const url = `https://esi.evetech.net/latest/corporations/${charData.corporation_id}/icons/?datasource=tranquility`;
+  const request = new RequestHelper(url);
+  return request.get();
 };
 
 module.exports = Character;

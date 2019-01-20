@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const character = new Character();
   character.bindEvents();
 
+
   const displayCharacterView = new DisplayCharacterView(mainContent);
   displayCharacterView.bindEvents();
 
