@@ -2,10 +2,6 @@ const RequestHelper = require('../helpers/request_helper.js');
 const PubSub = require('../helpers/pub_sub.js');
 
 const Character = function () {
-  this.data = null;
-  this.portraitURL = null;
-  this.corpData = null;
-  this.corpIconData = null;
 };
 
 Character.prototype.bindEvents = function() {
@@ -28,24 +24,14 @@ Character.prototype.getData = function (id){
   let corpIconURL = null;
   
   const charPromise = this.getBasicData(id)
-    .then(data => {
-      charData = data;
-    }).then(() => {
-      return this.getPortrait(id);
-    }).then( portraitReturn => {
-      portraitURL = portraitReturn;
-    }).then(() => {
-      return this.getCorpData(charData);
-    }).then( corpReturn => {
-      corpData = corpReturn;
-    }).then(() => {
-      return this.getCorpIcon(charData);
-    }).then( corpIconReturn => {
-      corpIconURL = corpIconReturn;
-    }).then(() => {
-      return ([charData, portraitURL, corpData, corpIconURL]);
-    });
-
+    .then(data => charData = data)
+    .then(() => this.getPortrait(id))
+    .then( portraitReturn => portraitURL = portraitReturn)
+    .then(() => this.getCorpData(charData))
+    .then( corpReturn => corpData = corpReturn)
+    .then(() => this.getCorpIcon(charData))
+    .then( corpIconReturn => corpIconURL = corpIconReturn)
+    .then(() => ([charData, portraitURL, corpData, corpIconURL]));
   return charPromise;
 };
 

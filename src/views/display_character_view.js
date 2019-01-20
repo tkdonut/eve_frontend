@@ -23,43 +23,45 @@ DisplayCharacterView.prototype.render = function() {
   const characterView = document.createElement('div');
   characterView.className = 'characterdisplay';
 
-  let lhs = document.createElement('div');
-  lhs.className = 'characterdisplay_lhs';
-  lhs = this.renderLHS(lhs);
-  characterView.appendChild(lhs);
+  characterView.appendChild(this.renderLHS());
+  characterView.appendChild(this.renderRHS());
 
-  let rhs = document.createElement('div');
-  rhs.className = 'characterdisplay_rhs';
-  rhs = this.renderRHS(rhs);
-  characterView.appendChild(rhs);
+  const corpLogo = document.createElement('img');
+  corpLogo.src = this.corpIconURL.px256x256;
+  characterView.appendChild(corpLogo);
 
   if (this.character_data.description){
-    const description = this.constructDescription();
-    characterView.appendChild(description);
+    characterView.appendChild(
+      this.constructDescription()
+    );
   }
-
   container.appendChild(characterView);
 };
 
-DisplayCharacterView.prototype.renderLHS = function (container){
+DisplayCharacterView.prototype.renderLHS = function (){
+  const lhs = document.createElement('div');
+  lhs.className = 'characterdisplay_lhs';
   const portrait = document.createElement('img');
   portrait.src = this.portraitURL.px256x256;
-  container.appendChild(portrait);
-  return container; 
+  lhs.appendChild(portrait);
+  return lhs;
 };
 
-DisplayCharacterView.prototype.renderRHS = function (container){
+DisplayCharacterView.prototype.renderRHS = function (){
+  const rhs = document.createElement('div');
+  rhs.className = 'characterdisplay_rhs';
   const header = document.createElement('h1');
   header.textContent = this.character_data.name;
-  container.appendChild(header);
+  rhs.appendChild(header);
   const birthday = new Date(this.character_data.birthday);
   const list = this.constructList(
     [
       'Born: ' + birthday.toUTCString(), 
-      'Gender: ' + this.character_data.gender, 
+      'Gender: ' + this.character_data.gender,
+      'Corporation: ' + this.corpData.name
     ]);
-  container.appendChild(list);
-  return container; 
+  rhs.appendChild(list);
+  return rhs; 
 };
 
 DisplayCharacterView.prototype.constructList = function (listItems) {

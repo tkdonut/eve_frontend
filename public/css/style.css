@@ -39,9 +39,8 @@ body {
 .characterdisplay {
   padding: 20px;
   display: grid;
-  grid-template-areas: 'header header'
-                       'lhs rhs'
-                       'description description';
+  grid-template: 'lhs rhs'
+                 'corpimage description';
   background-color: rgba(0,0,0,0.8);
   margin: 20px;
   border-radius: 10px;
@@ -52,7 +51,7 @@ body {
 
 .characterdisplay img {
   border-radius: 10px;
-  box-shadow: 5px 5px 5px black;
+  margin-right:20px;
 }
 
 
@@ -68,6 +67,10 @@ body {
   display: flex;
   flex-direction: column;
   width: 500px;
+}
+
+.characterdisplay_corpimage{
+  grid-area: corpimage;
 }
 
 .description{
