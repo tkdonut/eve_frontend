@@ -76,6 +76,7 @@ body {
   grid-area: description;
   margin-top: 30px;
   border-style: solid;
+  border-color: grey;
   padding: 20px;
   overflow: hidden;
 }
@@ -88,3 +89,7 @@ body {
   color: white;
 }
 
+.description h3 {
+  margin-top: 0px;
+  text-decoration: underline;
+}

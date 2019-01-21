@@ -13,8 +13,6 @@ DisplayCharacterView.prototype.bindEvents = function() {
     this.portraitURL = event.detail[1];  
     this.corpData = event.detail[2];
     this.corpIconURL = event.detail[3];
-    console.table(this.character_data)
-    console.table(this.corpData)
     this.render(); 
   });
 };
@@ -59,7 +57,7 @@ DisplayCharacterView.prototype.renderRHS = function (){
   const list = this.constructList(
     [
       'Born: ' + birthday.toUTCString(), 
-      'Gender: ' + (this.character_data.gender === 'male' ? "Male" : "Female"),
+      'Gender: ' + (this.character_data.gender === 'male' ? 'Male' : 'Female'),
       'Corporation: ' + this.corpData.name
     ]);
   rhs.appendChild(list);
@@ -73,6 +71,21 @@ DisplayCharacterView.prototype.constructList = function (listItems) {
     li.textContent = item;
     ul.appendChild(li);
   });
+  ul.appendChild(this.addSecStatus());
+  return ul;
+};
+
+DisplayCharacterView.prototype.constructDescription = function(){
+  const description = document.createElement('div');
+  const header = document.createElement('h3');
+  header.textContent = 'Description';
+  description.appendChild(header);
+  description.innerHTML += this.character_data.description;
+  description.className = 'description';
+  return description;
+};
+
+DisplayCharacterView.prototype.addSecStatus = function(){
   const secLi = document.createElement('li');
   secLi.textContent = 'Security Status: ' + this.character_data.security_status.toFixed(3);
   if (this.character_data.security_status < 0){
@@ -82,14 +95,7 @@ DisplayCharacterView.prototype.constructList = function (listItems) {
   } else {
     secLi.style.color = 'green';
   }
-  ul.appendChild(secLi);
-  return ul;
+  return secLi;
 };
 
-DisplayCharacterView.prototype.constructDescription = function(){
-  const description = document.createElement('div');
-  description.innerHTML = this.character_data.description;
-  description.className = 'description';
-  return description;
-};
 module.exports = DisplayCharacterView;
